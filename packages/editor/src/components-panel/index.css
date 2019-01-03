@@ -1,0 +1,5 @@
+.components-panel-container {
+  display: flex;
+  border: 1px solid #3d85cc;
+  flex: 1;
+}

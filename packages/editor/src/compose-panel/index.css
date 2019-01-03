@@ -1,0 +1,15 @@
+.compose-panel-container {
+  display: flex;
+  border: 1px solid #ffbd20;
+  flex-direction: column;
+  flex: 2;
+}
+
+.hr {
+  height: 1px;
+  background: #000;
+}
+
+.next {
+  background-color: crimson;
+}
