@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from 'react';
+import React, { Component, ReactElement, lazy } from 'react';
 import './index.css';
 
 import Button from '../components/button';
@@ -138,12 +138,15 @@ export default class ComposePanel extends Component {
         if (v.props.children) {
           return React.createElement(
             v.value,
-            v.props,
+            { ...v.props, ...{ key: Math.random() } },
             this.transform(v.props.children)
           );
         } else {
-          // let C = await import('../components/button');
-          return React.createElement(v.value, v.props);
+          return React.createElement(
+            v.value,
+            { ...v.props, ...{ key: Math.random() } },
+            null
+          );
         }
       }
       if (SYMBOL_PLAIN_TEXT === v.type) {
@@ -154,11 +157,14 @@ export default class ComposePanel extends Component {
         if (v.props.children) {
           return React.createElement(
             v.value,
-            v.props,
+            { ...v.props, ...{ key: Math.random() } },
             this.transform(v.props.children)
           );
         } else {
-          return React.createElement(v.value, v.props);
+          return React.createElement(v.value, {
+            ...v.props,
+            ...{ key: Math.random() }
+          });
         }
       }
     });

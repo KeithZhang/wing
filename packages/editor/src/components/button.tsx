@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 interface IButtonProps {
-  backgroundColor: string;
+  backgroundColor?: string;
 }
 
 export default class Button extends Component<IButtonProps> {
