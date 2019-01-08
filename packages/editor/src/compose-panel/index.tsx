@@ -163,10 +163,6 @@ export default class ComposePanel extends Component {
       }
     });
   };
-
-  convert = (children: []): ReactElement<any> => {
-    return null;
-  };
 }
 
 class ComposePanelContainer extends Component {
