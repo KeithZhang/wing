@@ -1,14 +1,96 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import './index.css';
 
 import Button from '../components/button';
+import Container from '../components/container';
+
+interface ChildrenType {
+  type: Symbol;
+  value: any;
+  props: {
+    children?: Array<ChildrenType>;
+  };
+}
+
+const SYMBOL_REACT_COMPONENT = Symbol.for('react-component');
+const SYMBOL_PLAIN_TEXT = Symbol.for('plain-text');
+const SYMBOL_HTML_TAG = Symbol.for('html-tag');
 
 export default class ComposePanel extends Component {
   composePanelContainerRef: any;
+  containerRef: any;
 
   state = {
-    json: {
-      name: 'Button'
+    configData: {
+      props: {
+        children: [
+          {
+            type: SYMBOL_REACT_COMPONENT,
+            value: Container,
+            props: {
+              children: [
+                {
+                  type: SYMBOL_PLAIN_TEXT,
+                  value: 'first'
+                },
+                {
+                  type: SYMBOL_REACT_COMPONENT,
+                  value: Button,
+                  props: {
+                    backgroundColor: 'green',
+                    children: [
+                      {
+                        type: SYMBOL_PLAIN_TEXT,
+                        value: 'first button'
+                      }
+                    ]
+                  }
+                },
+                {
+                  type: SYMBOL_HTML_TAG,
+                  value: 'div',
+                  props: {
+                    style: {
+                      backgroundColor: 'red',
+                      height: '2px'
+                    }
+                  }
+                },
+                {
+                  type: SYMBOL_PLAIN_TEXT,
+                  value: 'second'
+                },
+                {
+                  type: SYMBOL_REACT_COMPONENT,
+                  value: Button,
+                  props: {
+                    backgroundColor: 'green',
+                    children: [
+                      {
+                        type: SYMBOL_PLAIN_TEXT,
+                        value: 'second button'
+                      },
+                      {
+                        type: SYMBOL_REACT_COMPONENT,
+                        value: Button,
+                        props: {
+                          backgroundColor: 'green',
+                          children: [
+                            {
+                              type: SYMBOL_PLAIN_TEXT,
+                              value: 'third button'
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   };
 
@@ -17,40 +99,92 @@ export default class ComposePanel extends Component {
   }
 
   render() {
-    let btn = React.createElement(
-      Button,
-      {
-        backgroundColor: 'blue'
-      },
-      'hello button'
-    );
+    const { configData } = this.state;
+    let children = this.transform(configData.props.children as any);
 
     return (
-      <ComposePanelContainer
-        ref={ref => {
-          this.composePanelContainerRef = ref;
+      <ComposePanelContainer ref={ref => (this.composePanelContainerRef = ref)}>
+        {children}
+      </ComposePanelContainer>
+    );
+    // return (
+    //   <ComposePanelContainer ref={ref => (this.composePanelContainerRef = ref)}>
+    //     <Container>
+    //       first
+    //       <Button>first button</Button>
+    //       <div
+    //         style={{
+    //           backgroundColor: 'red',
+    //           height: '2px'
+    //         }}
+    //       />
+    //       second
+    //       <Button>
+    //         second button
+    //         <Button>third button</Button>
+    //       </Button>
+    //     </Container>
+    //   </ComposePanelContainer>
+    // );
+  }
+
+  transform = (children: Array<ChildrenType>) => {
+    if (!children || children.length < 0) {
+      return null;
+    }
+
+    return children.map((v: ChildrenType) => {
+      if (SYMBOL_REACT_COMPONENT === v.type) {
+        if (v.props.children) {
+          return React.createElement(
+            v.value,
+            v.props,
+            this.transform(v.props.children)
+          );
+        } else {
+          // let C = await import('../components/button');
+          return React.createElement(v.value, v.props);
+        }
+      }
+      if (SYMBOL_PLAIN_TEXT === v.type) {
+        return v.value;
+      }
+
+      if (SYMBOL_HTML_TAG === v.type) {
+        if (v.props.children) {
+          return React.createElement(
+            v.value,
+            v.props,
+            this.transform(v.props.children)
+          );
+        } else {
+          return React.createElement(v.value, v.props);
+        }
+      }
+    });
+  };
+
+  convert = (children: []): ReactElement<any> => {
+    return null;
+  };
+}
+
+class ComposePanelContainer extends Component {
+  state = {
+    name: 'keith1'
+  };
+  render() {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          border: '1px solid #ffbd20',
+          flexDirection: 'column',
+          flex: 2
         }}
       >
-        this is compose panel
-        <div className="hr" />
-        <Button>hello</Button>
-      </ComposePanelContainer>
+        {this.props.children}
+      </div>
     );
   }
 }
-
-const ComposePanelContainer = React.forwardRef((props, ref: any) => {
-  return (
-    <div
-      ref={ref}
-      style={{
-        display: 'flex',
-        border: '1px solid #ffbd20',
-        flexDirection: 'column',
-        flex: 2
-      }}
-    >
-      {props.children}
-    </div>
-  );
-});
