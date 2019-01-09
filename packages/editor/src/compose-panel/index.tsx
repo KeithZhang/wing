@@ -1,4 +1,5 @@
-import React, { Component, ReactElement, lazy } from 'react';
+import React, { Component } from 'react';
+import ts from 'typescript';
 import './index.css';
 
 import Button from '../components/button';
