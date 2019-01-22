@@ -3,7 +3,7 @@ import IButtonProps from './button.d';
 
 export default class Button extends Component<IButtonProps> {
   static defaultProps = {
-    backgroundColor: 'green'
+    backgroundColor: 'yellow'
   };
 
   render() {

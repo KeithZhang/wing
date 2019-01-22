@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
   mode: 'development',
-
+  target: 'electron-renderer',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, './dist'),

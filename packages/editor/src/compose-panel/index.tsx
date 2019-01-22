@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ts from 'typescript';
 import './index.css';
+import { ipcRenderer } from 'electron';
+import fs from 'fs';
 
 import Button from '../components/button';
 import Container from '../components/container';
@@ -38,7 +39,7 @@ export default class ComposePanel extends Component {
                   type: SYMBOL_REACT_COMPONENT,
                   value: Button,
                   props: {
-                    backgroundColor: 'green',
+                    backgroundColor: 'yellow',
                     children: [
                       {
                         type: SYMBOL_PLAIN_TEXT,
@@ -105,7 +106,17 @@ export default class ComposePanel extends Component {
 
     return (
       <ComposePanelContainer ref={ref => (this.composePanelContainerRef = ref)}>
-        {children}
+        {/* {children} */}
+        <div
+          style={{ border: '1px solid', height: 50, width: 50 }}
+          onClick={() => {
+            console.log(fs.readdirSync('/'));
+            console.log('clicked');
+            ipcRenderer.send('button-click');
+          }}
+        >
+          click me
+        </div>
       </ComposePanelContainer>
     );
     // return (
