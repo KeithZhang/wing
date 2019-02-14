@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './index.css';
 import { ipcRenderer } from 'electron';
-import fs from 'fs';
 
 import Button from '../components/button';
-import Container from '../components/container';
+import Frame from '../components/frame';
 
 interface ChildrenType {
   type: Symbol;
@@ -28,7 +27,7 @@ export default class ComposePanel extends Component {
         children: [
           {
             type: SYMBOL_REACT_COMPONENT,
-            value: Container,
+            value: Frame,
             props: {
               children: [
                 {
@@ -106,17 +105,7 @@ export default class ComposePanel extends Component {
 
     return (
       <ComposePanelContainer ref={ref => (this.composePanelContainerRef = ref)}>
-        {/* {children} */}
-        <div
-          style={{ border: '1px solid', height: 50, width: 50 }}
-          onClick={() => {
-            console.log(fs.readdirSync('/'));
-            console.log('clicked');
-            ipcRenderer.send('button-click');
-          }}
-        >
-          click me
-        </div>
+        {children}
       </ComposePanelContainer>
     );
     // return (
@@ -195,6 +184,15 @@ class ComposePanelContainer extends Component {
           border: '1px solid #ffbd20',
           flexDirection: 'column',
           flex: 2
+        }}
+        onClick={e => {
+          console.log('pageX..', e.pageX);
+          console.log('pageY..', e.pageY);
+          console.log('clientX..', e.clientX);
+          console.log('clientY..', e.clientY);
+          console.log('screenX..', e.screenX);
+          console.log('screenY..', e.screenY);
+          console.log('====>');
         }}
       >
         {this.props.children}

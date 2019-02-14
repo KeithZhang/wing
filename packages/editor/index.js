@@ -6,10 +6,10 @@ function createWindow() {
 
   // 然后加载应用的 index.html。
   win.loadFile('./dist/index.html');
-
-  ipcMain.on('button-click', () => {
-    console.log('received');
-  });
 }
 
 app.on('ready', createWindow);
+
+ipcMain.on('button-click', () => {
+  console.log('received');
+});

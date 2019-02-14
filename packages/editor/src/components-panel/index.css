@@ -1,5 +1,28 @@
 .components-panel-container {
   display: flex;
+  flex-direction: row;
   border: 1px solid #3d85cc;
   flex: 1;
+}
+
+.layout {
+  flex-direction: column;
+  display: flex;
+}
+
+.layout-column {
+  background-color: greenyellow;
+  margin: 10px;
+  height: 30px;
+}
+
+.custome {
+  display: flex;
+  flex-direction: column;
+}
+
+.custome-column {
+  background-color: greenyellow;
+  margin: 10px;
+  height: 30px;
 }
